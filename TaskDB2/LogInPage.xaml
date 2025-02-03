@@ -17,7 +17,7 @@
 
                 <TextBox x:Name="LogInLogBox" MinWidth="300" Margin="20 40 40 0" materialDesign:HintAssist.Hint="Введите логин"/>
                 <PasswordBox x:Name="LogInPassBox" MinWidth="300" Margin="20 20 40 0" materialDesign:HintAssist.Hint="Введите пароль"/>
-                <Button x:Name="Login" Content="Войти" Margin="20 100 40 0" Click="Login_Click"/>
+                <Button x:Name="Login" Content="Войти" Margin="20 100 40 0" Background="SlateGray" BorderBrush="Transparent" Click="Login_Click"/>
                 <StackPanel Orientation="Horizontal" Margin="0 5 0 0" HorizontalAlignment="Center" Height="50">
                     <TextBlock Text="Нет учетной записи?" Margin="0 8 0 0"/>
                     <Button x:Name="GoToReg" Content="Зарегистрироваться." Margin="0 0 0 20" Width="160" Style="{StaticResource MaterialDesignRaisedButton}" Foreground="Black" FontWeight="ExtraLight" BorderBrush="Transparent"  Background="{DynamicResource PrimaryHueMidBrush}" materialDesign:ButtonProgressAssist.IsIndicatorVisible="False" materialDesign:RippleAssist.Feedback="Transparent" Cursor="Hand" Click="GoToReg_Click"/>

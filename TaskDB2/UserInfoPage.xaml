@@ -1,0 +1,42 @@
+﻿<Page x:Class="TaskDB2.UserInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TaskDB2"
+      mc:Ignorable="d" 
+      d:DesignHeight="832" d:DesignWidth="1200"
+      Title="UserInfoPage">
+
+    <Border Background="#DCDCDC" Width="400" Height="800" HorizontalAlignment="Left" CornerRadius="15">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            
+
+            <Border  Grid.Column="0" Width="250" Background="Transparent" Padding="10" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Привет пользователь!" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding Login, StringFormat=Логин: {0}}" FontSize="16" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding Email, StringFormat=Почта: {0}}" FontSize="16" Margin="0,0,0,10"/>
+                    <Button Grid.Row="2" x:Name="ChangePassword" Content="Сменить пароль" Click="ChangePassword_Click" Margin="0,0,0,10" Background="SlateGray" BorderBrush="Transparent"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1"  Orientation="Vertical" VerticalAlignment="Center" Margin="10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="NewPasswordBlock" Text="Новый пароль:" FontSize="18" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="Collapsed"/>
+                    <TextBox x:Name="NewPasswordBox" Width="200" Margin="0,0,10,0" Visibility="Collapsed"/>
+                </StackPanel>
+                <Button x:Name="SavePassword" Content="Сохранить" Click="SavePassword_Click" Margin="0,20,0,0" Visibility="Collapsed" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Width="100" HorizontalAlignment="Left"/>
+
+                
+            </StackPanel>
+
+            <Button Grid.Row="2" x:Name="GoBack" Content="Назад" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Click="GoBack_Click"/>
+        </Grid>
+    </Border>
+</Page>

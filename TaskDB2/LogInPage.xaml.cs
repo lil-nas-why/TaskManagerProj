@@ -38,6 +38,8 @@ namespace TaskDB2
 
                 if (user != null)
                 {
+                    UserManager.currentUser = user;
+                  
                     FrameManager.MainFrame.Navigate(new TaskPage());
                 }
                 else

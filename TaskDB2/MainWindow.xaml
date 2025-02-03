@@ -6,7 +6,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:TaskDB2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="832" Width="1200 ">
+        Title="TaskManager" Height="832" Width="1200 "
+        Icon="Assets/icon.ico">
     <Window.Resources>
         <!-- Определить эффект размытия -->
         <BlurEffect x:Key="GlassBlurEffect" Radius="70"/>

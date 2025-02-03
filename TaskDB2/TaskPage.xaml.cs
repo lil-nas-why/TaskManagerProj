@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
@@ -21,6 +18,9 @@ namespace TaskDB2
 {
     public partial class TaskPage : Page
     {
+        private ObservableCollection<Task> tasks;
+        private ObservableCollection<Project> projects;
+
         public TaskPage()
         {
             InitializeComponent();
@@ -29,7 +29,20 @@ namespace TaskDB2
 
         private void TaskPage_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateSource();
+            LoadProjects();
+            LoadTasks();
+        }
+
+        private void LoadProjects()
+        {
+            projects = new ObservableCollection<Project>(TaskDBEntities.GetContext().Project.ToList());
+            ProjectsListView.ItemsSource = projects;
+        }
+
+        private void LoadTasks()
+        {
+            tasks = new ObservableCollection<Task>(TaskDBEntities.GetContext().Task.ToList());
+            ViewMainTusksLV.ItemsSource = tasks;
         }
 
         private void UpdateSource()
@@ -39,16 +52,11 @@ namespace TaskDB2
                 return;
             }
 
-            var source = TaskDBEntities.GetContext().Task.ToList();
-
-            if (!String.IsNullOrWhiteSpace(SearchBar.Text))
-            {
-                source = source.Where(x => x.Name.ToLower().Contains(SearchBar.Text.ToLower())).ToList();
-            }
+            var source = new ObservableCollection<Task>(tasks);
 
             if (PriorityFilterComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Content.ToString() != "Все")
             {
-                source = source.Where(x => x.Priority.ToLower() == selectedItem.Content.ToString().ToLower()).ToList();
+                source = new ObservableCollection<Task>(source.Where(x => x.Priority.ToLower() == selectedItem.Content.ToString().ToLower()));
             }
 
             ViewMainTusksLV.ItemsSource = source;
@@ -56,12 +64,12 @@ namespace TaskDB2
 
         private void AddMainTask_Click(object sender, RoutedEventArgs e)
         {
-            FrameManager.MainFrame.Navigate(new AddEditTaskPage(ViewMainTusksLV.SelectedItem as Task));
-            ViewMainTusksLV.SelectedIndex = -1;
-        }
+            var selectedProject = ProjectsListView.SelectedItem as Project;
+            if (selectedProject != null)
+            {
+                FrameManager.MainFrame.Navigate(new AddEditTaskPage(null, selectedProject.Id));
+            }
 
-        private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
-        {
             UpdateSource();
         }
 
@@ -141,7 +149,11 @@ namespace TaskDB2
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             var tasksForRemoving = ViewMainTusksLV.SelectedItems.Cast<Task>().ToList();
-            TaskDBEntities.GetContext().Task.RemoveRange(tasksForRemoving);
+            foreach (var task in tasksForRemoving)
+            {
+                TaskDBEntities.GetContext().Task.Remove(task);
+                tasks.Remove(task);
+            }
             TaskDBEntities.GetContext().SaveChanges();
             TaskDBEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
             UpdateSource();
@@ -158,13 +170,7 @@ namespace TaskDB2
 
         private void FillTaskDetails(Task task)
         {
-            TaskName.Text = task.Name;
-            DescBox.Text = task.Description;
-            CommentBox.Text = task.Comment;
-            PriorityLabel.Content = task.Priority;
-            Date.Text = $"Дата: {task.Deadline:dd/MM/yyyy @ HH:mm}";
-
-            PriorityLabel.DataContext = task;
+            // Заполните детали задачи здесь
         }
 
         private void CompleteButton_Click(object sender, RoutedEventArgs e)
@@ -187,6 +193,79 @@ namespace TaskDB2
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             FrameManager.MainFrame.Navigate(new LogInPage());
+        }
+
+        private void LoadTasksForProject(int projectId)
+        {
+            var tasksForProject = TaskDBEntities.GetContext().Task.Where(t => t.idProject == projectId).ToList();
+            ViewMainTusksLV.ItemsSource = new ObservableCollection<Task>(tasksForProject);
+        }
+
+        private void ProjectsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedProject = ProjectsListView.SelectedItem as Project;
+            if (selectedProject != null)
+            {
+                LoadTasksForProject(selectedProject.Id);
+            }
+        }
+
+        private void AddProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            FrameManager.MainFrame.Navigate(new AddEditProjectPage(null));
+        }
+
+        private void SearchBar_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            var source = TaskDBEntities.GetContext().Project.ToList();
+
+            if (!String.IsNullOrWhiteSpace(SearchBar.Text))
+            {
+                source = source.Where(x => x.Name.ToLower().Contains(SearchBar.Text.ToLower())).ToList();
+            }
+
+            ProjectsListView.ItemsSource = new ObservableCollection<Project>(source);
+        }
+
+        private void DeleteProject_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is int projectId)
+            {
+                var projectToRemove = TaskDBEntities.GetContext().Project.FirstOrDefault(p => p.Id == projectId);
+                if (projectToRemove != null)
+                {
+                    TaskDBEntities.GetContext().Project.Remove(projectToRemove);
+                    TaskDBEntities.GetContext().SaveChanges();
+                    projects.Remove(projectToRemove);
+                }
+            }
+        }
+
+        private void UserInfo_Click(object sender, RoutedEventArgs e)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser != null)
+            {
+                FrameManager.MainFrame.Navigate(new UserInfoPage(currentUser));
+            }
+            else
+            {
+                MessageBox.Show("No user is currently logged in.");
+            }
+        }
+
+        private User GetCurrentUser()
+        {
+            return UserManager.currentUser; // Возвращаем текущего пользователя из статического свойства
+        }
+
+        private void ViewMainTusksLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selectedTask = ViewMainTusksLV.SelectedItem as Task;
+            if (selectedTask != null)
+            {
+                FrameManager.MainFrame.Navigate(new ViewTaskPage(selectedTask));
+            }
         }
     }
 

@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace TaskDB2
 {
-    /// <summary>
-    /// Логика взаимодействия для RegPage.xaml
-    /// </summary>
     public partial class RegPage : Page
     {
         private TaskDBEntities dbe;
@@ -35,6 +32,7 @@ namespace TaskDB2
                 {
                     userReg.Login = LogBox.Text;
                     userReg.Password = PassBox.Password;
+                    userReg.Email = EmailBox.Text;
                 }
 
                 dbe.User.Add(userReg);

@@ -9,26 +9,31 @@
       d:DesignHeight="832" d:DesignWidth="1200"
       Title="AddEditTaskPage">
 
-    <Border  BorderBrush="#DCDCDC" Width="450" Height="732">
-        <Grid Background="#DCDCDC" >
+    <Border  BorderBrush="White" Width="450" Height="732" CornerRadius="20">
+        <Grid Background="White" >
             <StackPanel Orientation="Vertical" Margin="20 10 20 10">
                 <StackPanel Orientation="Horizontal" Margin="5" Width="380" Height="30">
                     <TextBox x:Name="TextName" Width="290"  materialDesign:HintAssist.Hint="Название задачи"/>
-                    <!--<ComboBox x:Name="PriorityComboBox" Width="70" Background="White" Margin=" 20 5 0 0"/>-->
+
+                    <ComboBox x:Name="AddPriorityComboBoxx" Margin="10 5 0 0" Width="80" >
+                        
+                        <ComboBoxItem Content="Высокий"/>
+                        <ComboBoxItem Content="Средний"/>
+                        <ComboBoxItem Content="Низкий"/>
+                        <ComboBoxItem Content="Нейтральный"/>
+                        
+                    </ComboBox>
                 </StackPanel>
 
                 <TextBox Name="Description" Margin="15 5 15 0" Height="240" Background="White" materialDesign:HintAssist.Hint="Описание задачи" VerticalContentAlignment="Top" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled"/>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="Priority" Margin="15 15 010 0" Height="30" Width="340" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Введите название приоритета"/>
-                    <Button x:Name="AddSubtasks" Height="30" Width="30" VerticalAlignment="Bottom" BorderBrush="Transparent" Background="#32CD32"/>
-                </StackPanel>
-
+                <Border Background="Gray" Height="0.5" Margin="10 10 10 0"/>
+                
                 <TextBox x:Name="CommentBox" Margin="15 15 15 0" Height="240" Background="White" Foreground="Black" materialDesign:HintAssist.Hint="Введите комментарий" VerticalContentAlignment="Top" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled"/>
 
                 <StackPanel Orientation="Horizontal" Margin="15" HorizontalAlignment="Right">
 
-                    <TextBox x:Name="IdStatusBox" Width="70" Margin="0 0 80 0" materialDesign:HintAssist.Hint="StatusId" TextAlignment="Center"/>
+                    
 
 
                     <TextBlock Text="Дата:" FontSize="15"/>

@@ -1,26 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TaskDB2
 {
     public partial class AddEditTaskPage : Page
     {
-
         private Task _currentTask = new Task();
+        private int _projectId;
 
-        public AddEditTaskPage(Task task)
+        public AddEditTaskPage(Task task, int projectId)
         {
             InitializeComponent();
 
@@ -28,6 +18,7 @@ namespace TaskDB2
             {
                 this._currentTask = task;
             }
+            this._projectId = projectId;
             DataContext = _currentTask;
         }
 
@@ -50,7 +41,7 @@ namespace TaskDB2
 
                 if (someTask != null)
                 {
-                    MessageBox.Show("Сотрудник уже существует", "ВНИМАНИЕ", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Задача уже существует", "ВНИМАНИЕ", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -62,7 +53,7 @@ namespace TaskDB2
                 {
                     count++;
                 }
-                if (String.IsNullOrWhiteSpace(Priority.Text))
+                if (AddPriorityComboBoxx.SelectedItem == null)
                 {
                     count++;
                 }
@@ -74,10 +65,7 @@ namespace TaskDB2
                 {
                     count++;
                 }
-                if (String.IsNullOrWhiteSpace(IdStatusBox.Text))
-                {
-                    count++;
-                }
+                
 
                 if (count > 0)
                 {
@@ -88,10 +76,10 @@ namespace TaskDB2
                 // Привязка значений к объекту задачи
                 _currentTask.Name = TextName.Text;
                 _currentTask.Description = Description.Text;
-                _currentTask.Priority = Priority.Text;
+                _currentTask.Priority = (AddPriorityComboBoxx.SelectedItem as ComboBoxItem).Content.ToString();
                 _currentTask.Comment = CommentBox.Text;
                 _currentTask.Deadline = DateTime.Parse(DateTask.Text);
-                _currentTask.idStatus = int.Parse(IdStatusBox.Text);
+                _currentTask.idProject = _projectId;
 
                 if (_currentTask.Id == 0)
                 {
@@ -107,10 +95,9 @@ namespace TaskDB2
             }
         }
 
-
         private void AddSubtasks_Click(object sender, RoutedEventArgs e)
         {
-
+            // Логика для добавления подзадач
         }
     }
 }

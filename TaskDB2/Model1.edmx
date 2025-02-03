@@ -13,6 +13,7 @@
           <Property Name="idUser" Type="int" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Team" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -214,6 +215,7 @@
           <Property Name="idUser" Type="Int32" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Team" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_Project" FromRole="Project" ToRole="Task" />
         </EntityType>
         <EntityType Name="Role">
@@ -435,6 +437,7 @@
                 <ScalarProperty Name="idUser" ColumnName="idUser" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

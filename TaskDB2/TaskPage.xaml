@@ -16,16 +16,16 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="435"/>
+            <ColumnDefinition Width="450"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="125"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
             <Border Background="SlateGray"/>
         </Grid>
 
-        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="UserInfo" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Background="Transparent" BorderBrush="Transparent" Click="UserInfo_Click">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Assets/logo.png" Width="24" Height="50" Margin="0,0,5,0"/>
                 <TextBlock Text="User Info" VerticalAlignment="Center"/>
@@ -44,11 +44,10 @@
             <Border Grid.RowSpan="3" Background="LightGray"/>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="30 10 0 0" Text="Задачи" FontSize="28" FontWeight="ExtraLight" />
-                <Button x:Name="AddMainTask" Content="Добавить Задачу" Margin="170 14 0 10" Background="SlateGray"  Click="AddMainTask_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White"/>
+                <TextBlock Margin="30 10 0 0" Text="Проекты" FontSize="28" FontWeight="ExtraLight" />
+                <Button Name="AddProjectButton" Content="Добавить проект" Margin="150 14 0 10" Background="SlateGray"  Click="AddProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White"/>
+                
             </StackPanel>
-
-            
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -56,17 +55,66 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border CornerRadius="10" BorderBrush="Gray" BorderThickness="2" Background="White" Margin="10 5 10 5" Padding="10" Grid.Row="1" Width="270">
+                <Border CornerRadius="10" BorderBrush="Gray" BorderThickness="2" Background="White" Margin="10 5 10 5" Padding="10" Grid.Row="1" Width="430">
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        
+
                         <TextBlock Text="Поиск: " Margin="5 10 0 5" VerticalAlignment="Center"/>
-                        <TextBox x:Name="SearchBar" Margin="2" Width="auto" MinWidth="360" TextChanged="SearchBar_TextChanged" VerticalContentAlignment="Center" BorderBrush="Transparent" />
-                        
+                        <TextBox x:Name="SearchBar" Margin="2" Width="auto" MinWidth="360" TextChanged="SearchBar_TextChanged_1" VerticalContentAlignment="Center" BorderBrush="Transparent" />
+
                     </StackPanel>
                 </Border>
+            </Grid>
 
-                <Border CornerRadius="10" BorderBrush="Gray" BorderThickness="2" Background="White" Margin="10 5 10 5" Padding="10" Grid.Column="1" Width="120">
+            <Border CornerRadius="10" BorderBrush="Gray" BorderThickness="2" Background="White" Margin="10 5 10 5" Padding="10" Grid.Row="2">
+                <ListView Name="ProjectsListView" Background="Transparent" BorderBrush="Transparent"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="2" Margin="20 30 20 10" SelectionChanged="ProjectsListView_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+
+
+                                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="ExtraLight" Margin="0 10 0 0" Grid.Row="0"/>
+
+                                <DockPanel Grid.Row="2">
+                                    <TextBlock Text="{Binding Team, StringFormat=Команда: {0}}" FontSize="14" FontWeight="Light" Margin="0 5 0 0" DockPanel.Dock="Left"/>
+                                    <Button x:Name="DeleteProject" Content="Удалить" FontWeight="Light" Background="Transparent" BorderBrush="Transparent" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="100 0 0 0" Click="DeleteProject_Click" Tag="{Binding Id}" DockPanel.Dock="Right"/>
+                                </DockPanel>
+                                
+                                <StackPanel Grid.Row="1" Margin="0 5 0 0" Orientation="Vertical">
+                                    <TextBlock Text="{Binding Description, StringFormat=Описание: {0}}" FontSize="12" FontWeight="Light" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+                                </StackPanel>
+                                
+                                
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
+
+        </Grid>
+
+        <Grid Grid.Column="2" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.RowSpan="2" Background="LightGray" />
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="30 10 0 0" Text="Задачи" FontSize="28" FontWeight="ExtraLight" />
+                <Button x:Name="AddMainTask" Content="Добавить Задачу" Width="145" Height="32" Margin="240 14 0 10" Background="SlateGray"  Click="AddMainTask_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <Border CornerRadius="10" BorderBrush="Gray" BorderThickness="2" Background="White" Margin="355 5 10 5" Padding="10" Grid.Column="1" Width="120">
 
                     <ComboBox x:Name="PriorityFilterComboBox" Margin="10 0 0 0" Width="80" SelectionChanged="PriorityFilterComboBox_SelectionChanged">
                         <ComboBoxItem Content="Все" IsSelected="True"/>
@@ -75,14 +123,11 @@
                         <ComboBoxItem Content="Низкий"/>
                         <ComboBoxItem Content="Завершено"/>
                     </ComboBox>
+                    
                 </Border>
-            </Grid>
+            </StackPanel>
 
-            <Border CornerRadius="10" BorderBrush="Gray" BorderThickness="2" Background="White" Margin="10 5 10 5" Padding="10" Grid.Row="2">
-
-            </Border>
-
-            <ListView Name="ViewMainTusksLV" Background="Transparent" BorderBrush="Transparent" Grid.Row="2" Margin="20 30 20 10" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="ViewMainTusksLV_SelectionChanged">
+            <ListView Name="ViewMainTusksLV" Background="Transparent" BorderBrush="Transparent" Grid.Row="3" Margin="20 30 20 10" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="ViewMainTusksLV_SelectionChanged" MouseDoubleClick="ViewMainTusksLV_MouseDoubleClick">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -118,47 +163,31 @@
             </ListView>
         </Grid>
 
-        <Grid Grid.Column="2" Background="White">
+        <Grid Grid.Column="3">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="125"/>
+                <RowDefinition Height="300"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10 17 10 10">
-                <Label x:Name="PriorityLabel" HorizontalContentAlignment="Center" FontSize="14"
-                    Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
-                    Foreground="White" Width="100" Height="30" Margin="0,0,10,0"/>
+            <Border Background="SlateGray">
+                <Image Source="Assets/MainLogo.png" Width="48" Height="48" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 20 20 20"/>
+            </Border>
 
-                <TextBlock x:Name="TaskName" FontSize="18" VerticalAlignment="Center"/>
-            </StackPanel>
+            <Border Background="LightGray" Grid.Row="1" Grid.RowSpan="2">
+                
+                <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Left" Margin="5 30 5 5">
+                    <Button x:Name="CompleteButton" Content="Завершить" Background="LightGreen" BorderBrush="Transparent" Width="110" Height="40" Margin="0 0 0 5"  Click="CompleteButton_Click"/>
+                    <Button x:Name="DeleteButton" Content="Удалить" Background="Red" BorderBrush="Transparent" Width="110" Height="40" Margin="0 0 0 5" Click="DeleteButton_Click"/>
+                    <Button x:Name="EditButton" Content="Редактировать" Width="110" Height="40" Margin="0 0 0 5" Background="Gray" BorderBrush="Transparent"/>
+                </StackPanel>
+                
+            </Border>
 
-            <TextBlock MaxHeight="27,5" x:Name="DescBox" Grid.Row="1" Margin="10" TextWrapping="Wrap"/>
+            <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Bottom" Margin="0 0 0 5">
 
-            <Border Grid.Row="3" Background="Gray" Height="0.5" Margin="15 5 15 0" VerticalAlignment="Top"/>
-
-            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" Margin="10,0,0,0">
-                <TextBlock x:Name="Date" Background="LightBlue" Padding="5" Margin="0,0,10,0"/>
-            </StackPanel>
-
-            <TextBlock MaxHeight="27,5" x:Name="CommentBox" Grid.Row="3" Margin="10 10 10 10" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" />
-
-            <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Left" Margin="20,10,0,10">
-                <Button x:Name="DeleteButton" Content="Удалить" Background="Red" BorderBrush="Transparent" FontSize="11" Width="120" Height="40" Margin="0,0,10,0" Click="DeleteButton_Click"/>
-                <Button x:Name="EditButton" Content="Редактировать" Width="120" Height="40" Background="Gray" BorderBrush="Transparent" Margin="0,0,10,0" />
-                <Button x:Name="CompleteButton" Content="Завершить" Background="LightGreen" BorderBrush="Transparent" Width="120" Height="40" Margin="100 0 10 0"  Click="CompleteButton_Click"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid Grid.Column="3">
-            <Border Background="SlateGray" />
-
-            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0 0 0 10">
-
-                <Button x:Name="ParseToJson" Content="в Json" Height="30" VerticalAlignment="Bottom" Margin="5" Click="ParseToJson_Click"/>
-                <Button x:Name="ParseToTxt" Content="в Txt" Height="30" VerticalAlignment="Bottom" Margin="5 0 5 5 " Click="ParseToTxt_Click"/>
+                <Button x:Name="ParseToJson" Content="в Json" Height="30" VerticalAlignment="Bottom" Background="SlateGray" BorderBrush="Transparent" Margin="5" Click="ParseToJson_Click"/>
+                <Button x:Name="ParseToTxt" Content="в Txt" Height="30" VerticalAlignment="Bottom" Background="SlateGray" BorderBrush="Transparent" Margin="5 0 5 5 " Click="ParseToTxt_Click"/>
 
             </StackPanel>
         </Grid>

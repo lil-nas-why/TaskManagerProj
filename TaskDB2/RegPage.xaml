@@ -17,10 +17,11 @@
 
                 <TextBox x:Name="LogBox" MinWidth="300" Margin="20 40 40 0" materialDesign:HintAssist.Hint="Введите логин"/>
                 <PasswordBox x:Name="PassBox" MinWidth="300" Margin="20 20 40 0" materialDesign:HintAssist.Hint="Введите пароль"/>
-                <Button x:Name="Reg" Content="Зарегистрироваться" Margin="20 100 40 0" Click="Reg_Click"/>
+                <TextBox x:Name="EmailBox" MinWidth="300" Margin="20 20 40 0" materialDesign:HintAssist.Hint="Введите Email"/>
+                <Button x:Name="Reg" Content="Зарегистрироваться" Margin="20 60 40 0" Background="SlateGray" BorderBrush="Transparent" Click="Reg_Click"/>
                 <StackPanel Orientation="Horizontal" Margin="0 5 0 0" HorizontalAlignment="Center" Height="50">
                     <TextBlock Text="Уже есть учетная запись?" Margin="0 8 0 0"/>
-                    <Button x:Name="GoToLogin" Content="Вход." Margin="0 0 0 20" Width="60" Style="{StaticResource MaterialDesignRaisedButton}" Foreground="Black" FontWeight="ExtraLight" BorderBrush="Transparent"  Background="{DynamicResource PrimaryHueMidBrush}" materialDesign:ButtonProgressAssist.IsIndicatorVisible="False" materialDesign:RippleAssist.Feedback="Transparent" Cursor="Hand" Click="GoToLogin_Click"/>
+                    <Button x:Name="GoToLogin" Content="Вход." Margin="0 0 0 20"  Width="60" Style="{StaticResource MaterialDesignRaisedButton}" Foreground="Black" FontWeight="ExtraLight" BorderBrush="Transparent"  Background="{DynamicResource PrimaryHueMidBrush}" materialDesign:ButtonProgressAssist.IsIndicatorVisible="False" materialDesign:RippleAssist.Feedback="Transparent" Cursor="Hand" Click="GoToLogin_Click"/>
                 </StackPanel>
             </StackPanel>
         </Border>
